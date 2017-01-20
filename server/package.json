@@ -1,0 +1,10 @@
+{
+  "name": "Airnow",
+  "version": "0.0.1",
+  "description": "my first socket.io app",
+  "dependencies": {
+    "express": "^4.14.0",
+    "serve-static": "^1.11.1",
+    "socket.io": "^1.7.2"
+  }
+}

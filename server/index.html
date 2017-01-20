@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Tattoo Home Air Now</title>
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+
+<!-- jQuery bootstrap.min.js -->
+<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="../../excanvas.min.js"></script><![endif]-->
+<script language="javascript" type="text/javascript" src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+<script language="javascript" type="text/javascript" src="http://cdn.bootcss.com/flot/0.8.3/jquery.flot.js"></script>
+
+<!-- Bootstrap JavaScript -->
+<script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="http://cdn.bootcss.com/socket.io/1.7.2/socket.io.min.js"></script>
+
+<style type="text/css">
+    .demo-container {
+        box-sizing: border-box;
+        width: 95%;
+        height: 300px;
+        padding: 20px 15px 15px 15px;
+        margin: 15px auto 30px auto;
+        border: 1px solid #ddd;
+        background: #fff;
+        background: linear-gradient(#f6f6f6 0, #fff 50px);
+        background: -o-linear-gradient(#f6f6f6 0, #fff 50px);
+        background: -ms-linear-gradient(#f6f6f6 0, #fff 50px);
+        background: -moz-linear-gradient(#f6f6f6 0, #fff 50px);
+        background: -webkit-linear-gradient(#f6f6f6 0, #fff 50px);
+        box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        -o-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        -ms-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        -moz-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        -webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    .demo-placeholder {
+        width: 100%;
+        height: 100%;
+        font-size: 14px;
+        line-height: 1.2em;
+    }
+</style>
+
+</head>
+ 
+<body>
+
+<div class="container-fluid text-center">
+    <img src="http://l.a-li.com.cn/201610/title02.jpg" class="img-rounded" />
+    <h1>tattoo's home air now</h1>
+    <h3 id="pm25"></h3>
+
+    <div class="demo-container">
+        <div id="placeholder" class="demo-placeholder"></div>
+    </div>
+</div>
+
+<script language="javascript" type="text/javascript" charset="utf-8" src="conc-aqi.js"></script>
+
+<script type="text/javascript">
+
+$(function() {
+
+    // We use an inline data source in the example, usually data would
+    // be fetched from a server
+
+    var data = [],
+        totalPoints = 300,
+        air = [];
+
+    var socket = io.connect(window.location.href);
+ 
+    socket.on('news', function(airdata){
+        air = airdata.split(/[:; ]/);
+        var aqi_cat = ChinaAQICategory(air[4]);
+        var aqius = AQIPM25(air[1]);
+        var aqius_cat = AQICategory(aqius);
+        //console.log(air);
+        document.getElementById("pm25").innerHTML = 
+        	"Status: <span style='color:" + aqius_cat.color + ";'>"+ aqi_cat.name + "</span> | <span style='color:" + aqius_cat.color + ";'>" + aqius_cat.name + 
+        	"</span><p/>AQI(国标): <span style='color:" + aqi_cat.color + ";'>"+ air[4] + 
+        	"</span><p/>AQI(美标): <span style='color:" + aqius_cat.color + ";'>"+ aqius + 
+        	"</span><p/>PM2.5: <span style='color:blue;'>" + air[1] + "</span> ug/m<sup>3</sup>";
+        
+        if (data.length > totalPoints)
+            data = data.slice(1);
+
+        data.push(air[1]);
+
+        // Zip the generated y values with the x values
+        var res = [];
+        for (var i = 0; i < data.length; ++i) {
+            res.push([i, data[i]])
+        }
+            
+        var plot = $.plot("#placeholder", [ res ], {
+            series: {
+                shadowSize: 0   // Drawing is faster without shadows
+            },
+            yaxis: {
+                min: 0,
+                max: 15
+            },
+            xaxis: {
+                show: false
+            }
+        });
+
+        plot.draw();
+    });
+});
+
+</script>
+</body>
+</html>

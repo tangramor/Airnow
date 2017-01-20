@@ -3,8 +3,10 @@
 import serial, time, MySQLdb, re
 from socketIO_client import SocketIO, LoggingNamespace
 
-# open a mysql connection
-conn=MySQLdb.connect(host="localhost",user="airnow",passwd="password",db="airnow",charset="utf8")
+
+''' SQL to create database:
+CREATE DATABASE IF NOT EXISTS `airnow` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+'''
 
 ''' SQL to create table: 
 CREATE TABLE IF NOT EXISTS `air_logs` (
@@ -15,6 +17,9 @@ CREATE TABLE IF NOT EXISTS `air_logs` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 '''
+
+# open mysql connection
+conn=MySQLdb.connect(host="localhost",user="airnow",passwd="password",db="airnow",charset="utf8")
 
 sql = "INSERT INTO air_logs(`pm25`,`aqi`,`time`) VALUES(%s,%s,NOW())"
 

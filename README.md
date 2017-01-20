@@ -1,0 +1,2 @@
+# Airnow
+一个读取DIY空气检测仪串口数据的Python客户端和一个可Web、手机访问的实时展示界面的Socket.io服务端

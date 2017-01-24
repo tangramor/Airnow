@@ -84,7 +84,7 @@ $(function() {
         var aqius_cat = AQICategory(aqius);
         //console.log(air);
         document.getElementById("pm25").innerHTML = 
-        	"Status: <span style='color:" + aqius_cat.color + ";'>"+ aqi_cat.name + "</span> | <span style='color:" + aqius_cat.color + ";'>" + aqius_cat.name + 
+        	"Status: <span style='color:" + aqi_cat.color + ";'>"+ aqi_cat.name + "</span> | <span style='color:" + aqius_cat.color + ";'>" + aqius_cat.name + 
         	"</span><p/>AQI(国标): <span style='color:" + aqi_cat.color + ";'>"+ air[4] + 
         	"</span><p/>AQI(美标): <span style='color:" + aqius_cat.color + ";'>"+ aqius + 
         	"</span><p/>PM2.5: <span style='color:blue;'>" + air[1] + "</span> ug/m<sup>3</sup>";
@@ -106,7 +106,7 @@ $(function() {
             },
             yaxis: {
                 min: 0,
-                max: 15
+                max: 30
             },
             xaxis: {
                 show: false
